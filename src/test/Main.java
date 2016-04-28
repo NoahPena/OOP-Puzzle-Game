@@ -7,6 +7,8 @@ public class Main
 {
     public static void main(String[] args)
     {
+        GraphicsEngine graphics = new GraphicsEngine();
+
         LevelOne levelOne = new LevelOne();
         levelOne.execute();
     }
