@@ -29,7 +29,7 @@ public abstract class Level implements GameLoop, Runnable
 		System.out.println("eh");
 		onCreate();
 		running = true;
-		thread = new Thread(new Level());
+		thread = new Thread(this);
 		thread.start();
 	}
 
