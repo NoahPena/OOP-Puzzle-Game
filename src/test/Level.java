@@ -26,7 +26,7 @@ public abstract class Level implements GameLoop, Runnable
 
 	public void execute()
 	{
-		System.out.println("eh");
+		//System.out.println("eh");
 		onCreate();
 		running = true;
 		thread = new Thread(this);
@@ -50,7 +50,7 @@ public abstract class Level implements GameLoop, Runnable
 	@Override
 	public void run()
 	{
-		System.out.println(running);
+		//System.out.println(running);
 		while(running)
 		{
 			long now = System.nanoTime();
@@ -58,7 +58,7 @@ public abstract class Level implements GameLoop, Runnable
 			lastLoopTime = now;
 			float delta = updateTime / BEST_TIME;
 
-			System.out.println("ehhh");
+			//System.out.println("ehhh");
 
 			onUpdate(delta);
 			onDraw();

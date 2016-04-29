@@ -19,7 +19,7 @@ public class LevelOne extends Level
 	@Override
 	public void onUpdate(float deltaTime)
 	{
-		System.out.println("bay bay");
+		//System.out.println("bay bay");
 	}
 
 	@Override

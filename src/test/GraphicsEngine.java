@@ -1,7 +1,5 @@
 package test;
 
-import com.sun.imageio.plugins.jpeg.JPEGImageMetadataFormatResources;
-
 import javax.swing.*;
 
 /**
