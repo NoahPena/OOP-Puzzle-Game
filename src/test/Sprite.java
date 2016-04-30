@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by noah-pena on 4/28/16.
  */
-public class Sprite extends JPanel
+public class Sprite 
 {
 
     private BufferedImage image;
@@ -16,6 +16,7 @@ public class Sprite extends JPanel
 
     private float x;
     private float y;
+
 
     public Sprite(BufferedImage image, float x, float y)
     {
@@ -52,10 +53,10 @@ public class Sprite extends JPanel
         this.y = y;
     }
 
-    @Override
-    public void paintComponent(Graphics g)
+    //Will call this method form inside paint component on update
+    public void draw(Graphics g) 
     {
-        super.paintComponent(g);
+
         g.drawImage(image, (int)x, (int)y, null);
     }
 }
