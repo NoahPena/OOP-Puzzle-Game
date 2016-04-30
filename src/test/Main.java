@@ -5,13 +5,11 @@ package test;
  */
 public class Main
 {
+    public static boolean DEBUG = true;
+
     public static void main(String[] args)
     {
-        Map map = new Map(".//assets//maps//basicMap", "basicBitchMap.tmx", 0, 0);
-
-        GraphicsEngine graphics = new GraphicsEngine(map);
-
-        //LevelOne levelOne = new LevelOne();
-        //levelOne.execute();
+        LevelOne levelOne = new LevelOne();
+        levelOne.execute();
     }
 }

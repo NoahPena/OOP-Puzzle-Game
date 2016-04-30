@@ -9,18 +9,20 @@ import java.awt.*;
 public class GraphicsEngine extends JFrame
 {
     private JPanel jPanel;
+    private int sizeX;
+    private int sizeY;
 
-    public GraphicsEngine(Map map)
+    public GraphicsEngine(Map map, int sizeX, int sizeY)
     {
         super();
-        this.setSize(800, 600);
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+
+        this.setSize(sizeX, sizeY);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         jPanel = new JPanel();
-        jPanel.setPreferredSize(new Dimension(800, 600));
-        map.setPreferredSize(new Dimension(800, 600));
-        System.out.println(jPanel.getPreferredSize().toString());
-        System.out.println(map.getPreferredSize().toString());
+        jPanel.setPreferredSize(new Dimension(sizeX, sizeY));
         jPanel.add(map);
         this.add(jPanel);
 

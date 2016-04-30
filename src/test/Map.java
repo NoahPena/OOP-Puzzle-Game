@@ -325,6 +325,11 @@ public class Map extends JPanel
         this.drawY = y;
     }
 
+    public void setDrawSize(int x, int y)
+    {
+        this.setPreferredSize(new Dimension(x, y));
+    }
+
     @Override
     protected void paintComponent(Graphics g)
     {
