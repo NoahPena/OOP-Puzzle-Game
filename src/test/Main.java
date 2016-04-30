@@ -9,9 +9,9 @@ public class Main
     {
         //GraphicsEngine graphics = new GraphicsEngine();
 
-        Map map = new Map("//home//noah-pena//School//OOP//OOP-Puzzle-Game//assets//maps//basicMap//basicBitchMap.tmx");
+        Map map = new Map(".//assets//maps//basicMap", "basicBitchMap.tmx");
 
-        LevelOne levelOne = new LevelOne();
-        levelOne.execute();
+        //LevelOne levelOne = new LevelOne();
+        //levelOne.execute();
     }
 }
