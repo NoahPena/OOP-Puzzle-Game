@@ -1,6 +1,7 @@
 package test;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -8,15 +9,19 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
  * Created by noah-pena on 4/29/16.
  */
-public class Map
+public class Map extends JPanel
 {
 
     class TileSet
@@ -105,9 +110,49 @@ public class Map
 
         private ArrayList<BufferedImage> data;
 
-        public MapLayer(String name, int width, int height)
-        {
 
+        public MapLayer(String name, int width, int height, ArrayList<Integer> tiles, ArrayList<TileSet> tilesets)
+        {
+            this.name = name;
+            this.layerWidth = width;
+            this.layerHeight = height;
+
+            data = new ArrayList<>();
+
+            convertTilesToData(tiles, tilesets);
+        }
+
+        private void convertTilesToData(ArrayList<Integer> tiles, ArrayList<TileSet> tilesets)
+        {
+            for(int i = 0; i < tiles.size(); i++)
+            {
+                if(tiles.get(i) != 0)
+                {
+                    for (int j = 0; j < tilesets.size(); j++)
+                    {
+                        if (tilesets.get(j).getImageFromGID(tiles.get(i)) != null)
+                        {
+                            BufferedImage image = tilesets.get(j).getImageFromGID(tiles.get(i));
+                            data.add(image);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    data.add(null);
+                }
+            }
+        }
+
+        public ArrayList<BufferedImage> getLayerTiles()
+        {
+            return data;
+        }
+
+        public int getLength()
+        {
+            return data.size();
         }
     }
 
@@ -120,14 +165,21 @@ public class Map
     private int tileWidth;
     private int tileHeight;
 
+    private int drawX;
+    private int drawY;
+
     private ArrayList<TileSet> tilesets;
     private ArrayList<MapLayer> layers;
 
+    private BufferedImage masterImage;
 
-    public Map(String path, String fileName)
+
+    public Map(String path, String fileName, int drawX, int drawY)
     {
         this.path = path;
         this.fileName = fileName;
+        this.drawX = drawX;
+        this.drawY = drawY;
 
         tilesets = new ArrayList<>();
         layers = new ArrayList<>();
@@ -168,13 +220,33 @@ public class Map
 
             //Get Layers
             NodeList layerList = doc.getElementsByTagName("layer");
-            NodeList tileList = doc.getElementsByTagName("data");
 
             for(int i = 0; i < layerList.getLength(); i++)
             {
                 Element layerElement = (Element)layerList.item(i);
-                Element tileElement = (Element)tileList.item(i);
-                System.out.println(tileElement);
+
+                String name = layerElement.getAttribute("name");
+                int layerWidth = Integer.parseInt(layerElement.getAttribute("width"));
+                int layerHeight = Integer.parseInt(layerElement.getAttribute("height"));
+
+                ArrayList<Integer> data = new ArrayList<>();
+
+                NodeList tileList = layerList.item(i).getChildNodes().item(1).getChildNodes();
+
+                //System.out.println(tileList.item(1));
+
+                for(int j = 1; j < tileList.getLength(); j++)
+                {
+                    if(tileList.item(j).getNodeType() == Node.ELEMENT_NODE)
+                    {
+                        Element tileElement = (Element)tileList.item(j);
+                        String gid = tileElement.getAttribute("gid");
+
+                        data.add(Integer.parseInt(gid));
+                    }
+                }
+
+                layers.add(new MapLayer(name, layerWidth, layerHeight, data, tilesets));
             }
 
         }
@@ -182,5 +254,83 @@ public class Map
         {
             e.printStackTrace();
         }
+
+        createMasterImage();
     }
+
+    private void createMasterImage()
+    {
+        ArrayList<BufferedImage> masterList = new ArrayList<>();
+
+        for(int k = 0; k < layers.get(0).getLayerTiles().size(); k++)
+        {
+            masterList.add(null);
+        }
+
+        for(int i = 0; i < layers.size(); i++)
+        {
+            ArrayList<BufferedImage> data = layers.get(i).getLayerTiles();
+
+            for(int j = 0; j < data.size(); j++)
+            {
+                BufferedImage image = data.get(j);
+
+                if(masterList.get(j) == null)
+                {
+                    masterList.set(j, image);
+                }
+                else if(masterList.get(j) != null)
+                {
+                    masterList.set(j, image);
+                }
+                else if(image == null)
+                {
+
+                }
+            }
+        }
+
+        masterImage = new BufferedImage(tileWidth * mapWidth, tileHeight * mapHeight, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D graphics = masterImage.createGraphics();
+        graphics.setPaint(Color.WHITE);
+        graphics.fillRect(0, 0, tileWidth * mapWidth, tileHeight * mapHeight);
+        graphics.setBackground(Color.WHITE);
+
+        for(int s = 0; s < mapHeight; s++)
+        {
+            for(int l = 0; l < mapWidth; l++)
+            {
+                graphics.drawImage(masterList.get(l + (s * mapWidth)), l * tileWidth, s * tileHeight, null);
+            }
+        }
+
+        System.out.println(masterImage);
+
+    }
+
+    public int getDrawX()
+    {
+        return this.drawX;
+    }
+
+    public int getDrawY()
+    {
+        return this.drawY;
+    }
+
+    public void setDrawPosition(int x, int y)
+    {
+        this.drawX = x;
+        this.drawY = y;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        g.drawImage(masterImage, drawX, drawY, this);
+    }
+
+
 }

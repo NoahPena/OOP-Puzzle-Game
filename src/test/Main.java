@@ -7,9 +7,9 @@ public class Main
 {
     public static void main(String[] args)
     {
-        //GraphicsEngine graphics = new GraphicsEngine();
+        Map map = new Map(".//assets//maps//basicMap", "basicBitchMap.tmx", 0, 0);
 
-        Map map = new Map(".//assets//maps//basicMap", "basicBitchMap.tmx");
+        GraphicsEngine graphics = new GraphicsEngine(map);
 
         //LevelOne levelOne = new LevelOne();
         //levelOne.execute();
