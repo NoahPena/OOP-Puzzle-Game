@@ -156,6 +156,15 @@ public class Map extends JPanel
         }
     }
 
+    class CollisionLayer extends MapLayer
+    {
+
+        public CollisionLayer(String name, int width, int height, ArrayList<Integer> tiles, ArrayList<TileSet> tilesets)
+        {
+            super(name, width, height, tiles, tilesets);
+        }
+    }
+
     private File xmlFile;
     private String path;
     private String fileName;
