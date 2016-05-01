@@ -1,6 +1,8 @@
 package test;
 
-import java.awt.*;
+import test.entity.Player;
+
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -10,7 +12,8 @@ import java.awt.event.KeyListener;
 public class LevelOne extends Level implements KeyListener
 {
 	Map map;
-	GraphicsEngine graphics;
+	//GraphicsEngine graphics;
+	Player player;
 
 	public LevelOne()
 	{
@@ -23,21 +26,28 @@ public class LevelOne extends Level implements KeyListener
 		map = new Map(".//assets//maps//basicMap", "basicBitchMap.tmx", 0, 0);
 		map.setDrawSize(800, 600);
 
-		graphics = new GraphicsEngine(map, 800, 600);
-		graphics.addKeyListener(this);
+		//graphics = new GraphicsEngine(map, 800, 600);
+		//graphics.addKeyListener(this);
+
+
+		//Add player
+		player = Player.getInstance();
 	}
 
 	@Override
 	public void onUpdate(float deltaTime)
 	{
-
+		this.player.update();
 	}
 
 	@Override
 	public void onDraw()
 	{
-		map.repaint();
-		graphics.repaint();
+		if(this.map.getGraphics() != null)
+		{
+			map.repaint();
+			this.player.draw(this.map.getGraphics());
+		}
 	}
 
 	@Override
@@ -48,6 +58,9 @@ public class LevelOne extends Level implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent keyEvent)
 	{
+		//send event to player
+		this.player.keyPressed(keyEvent);
+
 		switch(keyEvent.getKeyCode())
 		{
 			case KeyEvent.VK_LEFT:
@@ -78,6 +91,15 @@ public class LevelOne extends Level implements KeyListener
 
 	@Override
 	public void keyReleased(KeyEvent keyEvent) {
+		this.player.keyReleased(keyEvent);
+	}
 
+	public Map getMap() {
+		return map;
+	}
+
+	public void setKeyListener(JFrame frame)
+	{
+		frame.addKeyListener(this);
 	}
 }
