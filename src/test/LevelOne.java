@@ -37,21 +37,18 @@ public class LevelOne extends Level implements KeyListener
 
 		//Add player
 		player = Player.getInstance();
+        player.setMap(this.map);
         entities.add(new Rock());
+        entities.get(0).setMap(this.map);
 	}
 
 	@Override
 	public void onUpdate(float deltaTime)
 	{
-		this.player.update();
-
-		if(Main.DEBUG)
-		{
-			System.out.println(map.testCollision(this.player.getRectangle()));
-		}
+		this.player.update(entities);
 
         for (Entity ent: entities)
-            ent.update();
+            ent.update(entities);
 
 	}
 

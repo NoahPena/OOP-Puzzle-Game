@@ -251,7 +251,6 @@ public class Map extends JPanel
                             }
                             else
                             {
-                                System.out.println("PointX: " + pointX + "\nPointY: " + pointY);
 
                                 rectangles.add(new Rectangle(pointX, pointY, tilesets.get(j).tileWidth, tilesets.get(j).tileHeight));
 
