@@ -77,6 +77,12 @@ public class ImmovableRock extends Entity
                     this.moved++;
                     break;
             }
+
+            if(this.moved >= 32)
+            {
+                this.moved = 0;
+                this.moves.pop();
+            }
         }
     }
 

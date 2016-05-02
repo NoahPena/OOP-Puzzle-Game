@@ -30,10 +30,8 @@ public class Main
 
         //while(Settings.gameOver != false)
        // {
-            //TitleScreen title = new TitleScreen();
-            //title.setPreferredSize(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
-
-            //frame.setContentPane(title);
+            TitleScreen title = new TitleScreen(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
+            frame.setContentPane(title);
 
             //title.run
             //if run returns true continue if run returns false exit game
@@ -43,16 +41,17 @@ public class Main
 
 
             //Set Character
-            Settings.setPlayerSelection(5);
-
-            //Set up Level
-            LevelOne levelOne = new LevelOne();
-            levelOne.execute();
-            levelOne.setKeyListener(frame);
-
-            frame.setContentPane(levelOne.getMap());
+//            Settings.setPlayerSelection(5);
+//
+//            //Set up Level
+//            LevelOne levelOne = new LevelOne();
+//            levelOne.execute();
+//            levelOne.setKeyListener(frame);
+//
+//            frame.setContentPane(levelOne.getMap());
 
             frame.setVisible(true);
+            title.draw();
       //  }
 
 
