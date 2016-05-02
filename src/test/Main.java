@@ -30,10 +30,11 @@ public class Main
 
         //while(Settings.gameOver != false)
        // {
-            //TitleScreen title = new TitleScreen();
-            //title.setPreferredSize(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
+           // TitleScreen title = new TitleScreen();
+           // title.setPreferredSize(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
 
-            //frame.setContentPane(title);
+           // frame.setContentPane(title);
+
 
             //title.run
             //if run returns true continue if run returns false exit game
