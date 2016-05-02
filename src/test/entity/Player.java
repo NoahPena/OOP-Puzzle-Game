@@ -172,7 +172,6 @@ public class Player extends Entity
 	public void collison(ArrayList<Entity> list)
 	{
 
-
 		for (Entity e: list)
 		{
 
