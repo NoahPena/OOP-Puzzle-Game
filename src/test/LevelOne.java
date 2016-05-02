@@ -45,6 +45,11 @@ public class LevelOne extends Level implements KeyListener
 	{
 		this.player.update();
 
+		if(Main.DEBUG)
+		{
+			System.out.println(map.testCollision(this.player.getRectangle()));
+		}
+
         for (Entity ent: entities)
             ent.update();
 

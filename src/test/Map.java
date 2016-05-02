@@ -36,7 +36,9 @@ public class Map extends JPanel
         private ArrayList<BufferedImage> tiles;
         private int amountOfTiles;
 
-        public TileSet(String path, int firstGID, int tileWidth, int tileHeight, int imageWidth, int imageHeight, String name)
+        private ArrayList<Duple<String, Integer>> properties;
+
+        public TileSet(String path, int firstGID, int tileWidth, int tileHeight, int imageWidth, int imageHeight, String name, ArrayList<Duple<String, Integer>> properties)
         {
             this.path = path;
             this.firstGID = firstGID;
@@ -45,6 +47,7 @@ public class Map extends JPanel
             this.imageWidth = imageWidth;
             this.imageHeight = imageHeight;
             this.name = name;
+            this.properties = properties;
 
             try
             {
@@ -71,11 +74,29 @@ public class Map extends JPanel
             }
         }
 
+        public int getPropertyValueByName(String name)
+        {
+            if(properties == null)
+            {
+                return -1;
+            }
+
+            for(int i = 0; i < properties.size(); i++)
+            {
+                if(properties.get(i).getName().equalsIgnoreCase(name))
+                {
+                    return properties.get(i).getValue();
+                }
+            }
+
+            return -1;
+        }
+
         public BufferedImage getImageFromGID(int gid)
         {
             if(gid >= this.firstGID && gid < this.firstGID + amountOfTiles)
             {
-                return tiles.get(gid - 1);
+                return tiles.get(gid - this.firstGID);
             }
 
             return null;
@@ -153,12 +174,108 @@ public class Map extends JPanel
         }
     }
 
-    class CollisionLayer extends MapLayer
+    class Duple<T, K>
     {
+        private T name;
+        private K value;
+
+        public Duple(T name, K value)
+        {
+            this.name = name;
+            this.value = value;
+        }
+
+        public T getName()
+        {
+            return name;
+        }
+
+        public K getValue()
+        {
+            return value;
+        }
+
+
+    }
+
+    class CollisionLayer
+    {
+        private String name;
+        private int layerWidth;
+        private int layerHeight;
+
+        private ArrayList<Boolean> collidable;
+        private ArrayList<Rectangle> rectangles;
 
         public CollisionLayer(String name, int width, int height, ArrayList<Integer> tiles, ArrayList<TileSet> tilesets)
         {
-            super(name, width, height, tiles, tilesets);
+            this.name = name;
+            this.layerWidth = width;
+            this.layerHeight = height;
+
+            collidable = new ArrayList<>();
+            rectangles = new ArrayList<>();
+
+            for(int i = 0; i < tiles.size(); i++)
+            {
+                for(int j = 0; j < tilesets.size(); j++)
+                {
+                    if (tilesets.get(j).getImageFromGID(tiles.get(i)) != null)
+                    {
+                        boolean temp = (tilesets.get(j).getPropertyValueByName("passable") == 1) ? true : false;
+                        collidable.add(temp);
+
+                        if(temp)
+                        {
+                           rectangles.add(null);
+                        }
+                        else
+                        {
+                            int pointX = -1;
+                            int pointY = -1;
+
+                            for(int t = 1; t < height; t++)
+                            {
+                                if(width * t > i)
+                                {
+                                    pointX = (i) - ((t - 1) * width);
+                                    pointX *= tilesets.get(j).tileWidth;
+                                    pointY = (t - 1) * tilesets.get(j).tileHeight;
+                                    break;
+                                }
+                            }
+
+                            if(pointX == -1)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                System.out.println("PointX: " + pointX + "\nPointY: " + pointY);
+
+                                rectangles.add(new Rectangle(pointX, pointY, tilesets.get(j).tileWidth, tilesets.get(j).tileHeight));
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public boolean canPass(Rectangle rectangle)
+        {
+            for(int i = 0; i < rectangles.size(); i++)
+            {
+                if(rectangles.get(i) != null)
+                {
+                    if(rectangles.get(i).intersects(rectangle))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 
@@ -176,6 +293,7 @@ public class Map extends JPanel
 
     private ArrayList<TileSet> tilesets;
     private ArrayList<MapLayer> layers;
+    private CollisionLayer collisionLayer;
 
     private BufferedImage masterImage;
 
@@ -212,12 +330,28 @@ public class Map extends JPanel
             NodeList tilesetList = doc.getElementsByTagName("tileset");
             NodeList imageList = doc.getElementsByTagName("image");
 
+
             for(int i = 0; i < tilesetList.getLength(); i++)
             {
                 Element tilesetElement = (Element)tilesetList.item(i);
                 Element imageElement = (Element)imageList.item(i);
+
+                NodeList propertyList = tilesetList.item(i).getChildNodes().item(1).getChildNodes();
+
+                ArrayList<Duple<String, Integer>> properties = new ArrayList<>();
+
+                for(int n = 1; n < propertyList.getLength(); n += 2)
+                {
+                    Element propertyElement = (Element)propertyList.item(n);
+                    String name = propertyElement.getAttribute("name");
+                    int value = Integer.parseInt(propertyElement.getAttribute("value"));
+                    properties.add(new Duple<>(name, value));
+                }
+
                 int firstGID = Integer.parseInt(tilesetElement.getAttribute("firstgid"));
                 String name = tilesetElement.getAttribute("name");
+
+
                 int widthTile = Integer.parseInt(tilesetElement.getAttribute("tilewidth"));
                 int heightTile = Integer.parseInt(tilesetElement.getAttribute("tileheight"));
                 String source = imageElement.getAttribute("source");
@@ -226,7 +360,7 @@ public class Map extends JPanel
 
                 System.out.println(path + "/" + source);
 
-                tilesets.add(new TileSet(path + File.separator + source, firstGID, widthTile, heightTile, imageWidth, imageHeight, name));
+                tilesets.add(new TileSet(path + File.separator + source, firstGID, widthTile, heightTile, imageWidth, imageHeight, name, properties));
             }
 
             //Get Layers
@@ -257,7 +391,14 @@ public class Map extends JPanel
                     }
                 }
 
-                layers.add(new MapLayer(name, layerWidth, layerHeight, data, tilesets));
+                if(name.equalsIgnoreCase("Collision"))
+                {
+                    collisionLayer = new CollisionLayer(name, layerWidth, layerHeight, data, tilesets);
+                }
+                else
+                {
+                    layers.add(new MapLayer(name, layerWidth, layerHeight, data, tilesets));
+                }
             }
 
         }
@@ -267,6 +408,11 @@ public class Map extends JPanel
         }
 
         createMasterImage();
+    }
+
+    public boolean testCollision(Rectangle rectangle)
+    {
+        return collisionLayer.canPass(rectangle);
     }
 
     private void createMasterImage()
@@ -323,6 +469,18 @@ public class Map extends JPanel
     public void draw(Graphics g)
     {
         g.drawImage(masterImage, drawX, drawY, this);
+
+        if(Main.DEBUG)
+        {
+            for(int i = 0; i < collisionLayer.rectangles.size(); i++)
+            {
+                Rectangle rectangle = collisionLayer.rectangles.get(i);
+                if(rectangle != null)
+                {
+                    g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+                }
+            }
+        }
     }
 
     public int getDrawX()

@@ -1,5 +1,6 @@
 package test.entity;
 
+import test.Main;
 import test.Settings;
 
 import javax.imageio.ImageIO;
@@ -20,6 +21,8 @@ public class Player extends Entity
 	private boolean aPressed;
 	private boolean sPressed;
 	private boolean dPressed;
+
+	private Rectangle rectangle;
 
 
 	private static Player instance;
@@ -66,6 +69,14 @@ public class Player extends Entity
 		this.setaPressed(false);
 		this.setsPressed(false);
 		this.setdPressed(false);
+
+		this.rectangle = new Rectangle((int)this.getX(), (int)this.getY(), this.imageStates.get(0).getWidth(), this.imageStates.get(0).getHeight());
+
+	}
+
+	public Rectangle getRectangle()
+	{
+		return rectangle;
 	}
 
 	public static Player getInstance() {
@@ -167,6 +178,10 @@ public class Player extends Entity
 
 		this.setX(this.getX() + this.getVelX()); //Move on the x axis
 		this.setY(this.getY() + this.getVelY()); //Move on the x axis
+
+		this.rectangle.setLocation((int)this.getX(), (int)this.getY());
+
+//		System.out.println("PlayerX: " + this.getX() + "\nPlayerY: " + this.getY());
 	}
 
 	public void collison(ArrayList<Entity> list)
@@ -183,6 +198,11 @@ public class Player extends Entity
 		if(this.getImg() != null)
 		{
 			g.drawImage(this.getImg(), (int)this.getX(), (int)this.getY(), this.getImg().getWidth(), this.getImg().getHeight(), null);
+		}
+
+		if(Main.DEBUG)
+		{
+			g.drawRect(rectangle.x, rectangle.y, (int) rectangle.getWidth(), (int) rectangle.getHeight());
 		}
 	}
 
