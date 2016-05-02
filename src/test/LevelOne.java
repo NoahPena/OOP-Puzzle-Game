@@ -111,8 +111,8 @@ public class LevelOne extends Level implements KeyListener
 		if(player.getBounds().intersects(this.getGoal()))
 		{
 			Graphics g = this.screen.getGraphics();
-			g.setFont(this.screen.getGraphics().getFont().deriveFont(300f));
-			g.drawString("Winner", 250, 500);
+			g.setFont(this.screen.getGraphics().getFont().deriveFont(200f));
+			g.drawString("Level Complete", 100, 500);
 			this.map.getGraphics().drawImage(this.screen, 0, 0, null);
 			this.end();
 		}
