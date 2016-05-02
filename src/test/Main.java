@@ -1,6 +1,7 @@
 package test;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by npena9 on 4/13/2016.
@@ -17,12 +18,21 @@ public class Main
         frame.setName("OPP Game");
         frame.setIgnoreRepaint(true);
 
+        //SetSize of frame and record size of content pane for later use
+        frame.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
+        frame.getContentPane().setPreferredSize(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
+        frame.pack();
+        Settings.setWindowWidth((int)frame.getContentPane().getSize().getWidth());
+        Settings.setWindowHeight((int)frame.getContentPane().getSize().getHeight());
 
+        //Set Character
+        Settings.setPlayerSelection(5);
+
+        //Set up Level
         LevelOne levelOne = new LevelOne();
         levelOne.execute();
         levelOne.setKeyListener(frame);
 
-        frame.setSize(800, 600);
         frame.setContentPane(levelOne.getMap());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

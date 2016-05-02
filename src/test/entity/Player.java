@@ -1,5 +1,7 @@
 package test.entity;
 
+import test.Settings;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -30,11 +32,45 @@ public class Player extends Entity
 
 		try
 		{
+            int setX = 0;
+            int setY = 0;
 			playerStates = ImageIO.read(getClass().getResourceAsStream("/player/testSprites.png"));
 
-			for (int a = 0; a < (playerStates.getWidth()/32)/4; a++)
-				for (int b = 0; b < (playerStates.getHeight()/32)/2; b++)
-					this.imageStates.add(playerStates.getSubimage(a*32, b*32, 32, 32));
+            switch (Settings.getPlayerSelection())
+            {
+                case 1:
+                    setX = 3;
+                    break;
+
+                case 2:
+                    setX = 6;
+                    break;
+
+                case 3:
+                    setX = 9;
+                    break;
+
+                case 4:
+                    setY = 4;
+                    break;
+
+                case 5:
+                    setX = 3;
+                    setY = 4;
+                    break;
+
+                case 6:
+                    setX = 6;
+                    setY = 4;
+                    break;
+
+                default:
+                    //Default character
+            }
+            
+			for (int x = setX; x < (playerStates.getWidth()/32)/4 + setX; x++)
+				for (int y = setY; y < (playerStates.getHeight()/32)/2 + setY; y++)
+					this.imageStates.add(playerStates.getSubimage(x*32, y*32, 32, 32));
 
 		} catch (IOException e)
 		{
@@ -73,12 +109,20 @@ public class Player extends Entity
 		//Check movement
 		if(wPressed && !sPressed)						//Up
 		{
-			this.setVelY(-1);
+            if (this.getY() > 0)
+			    this.setVelY(-1);
+            else
+                this.setVelY(0);
+
 			this.setImg((this.imageStates.get(3)));
 		}
 		else if(sPressed && !wPressed)					//Down
 		{
-			this.setVelY(1);
+            if(this.getY() + this.getImg().getHeight() < Settings.getWindowHeight())
+			    this.setVelY(1);
+            else
+                this.setVelY(0);
+
 			this.setImg((this.imageStates.get(0)));
 		}
 		else											//No Vertical movements
@@ -88,12 +132,19 @@ public class Player extends Entity
 
 		if(aPressed && !dPressed)						//Left
 		{
-		 	this.setVelX(-1);
+            if(this.getX() > 0)
+		 	    this.setVelX(-1);
+            else
+                this.setVelX(0);
+
 		 	this.setImg((this.imageStates.get(1)));
 		}
 		else if(dPressed && !aPressed)					//Right
 		{
-			this.setVelX(1);
+            if(this.getX() + this.getImg().getWidth() < Settings.getWindowWidth())
+			    this.setVelX(1);
+            else
+                this.setVelX(0);
 			this.setImg((this.imageStates.get(2)));
 		}
 		else											//No Horizontal movements
@@ -105,8 +156,10 @@ public class Player extends Entity
 		this.setY(this.getY() + this.getVelY()); //Move on the x axis
 	}
 
-	public void collison(ArrayList<Entity> list, int x, int y)
+	public void collison(ArrayList<Entity> list)
 	{
+
+
 		for (Entity e: list)
 		{
 

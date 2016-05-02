@@ -22,18 +22,14 @@ public class LevelOne extends Level implements KeyListener
 	{
 		super();
 
-		screen = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+		screen = new BufferedImage(Settings.getWindowWidth(), Settings.getWindowHeight(), BufferedImage.TYPE_INT_RGB);
 	}
 
 	@Override
 	public void onCreate()
 	{
 		map = new Map("/maps/basicMap", "basicBitchMap.tmx", 0, 0);
-		map.setDrawSize(800, 600);
-
-		//graphics = new GraphicsEngine(map, 800, 600);
-		//graphics.addKeyListener(this);
-
+		map.setDrawSize(Settings.getWindowWidth(), Settings.getWindowHeight());
 
 		//Add player
 		player = Player.getInstance();
@@ -68,32 +64,32 @@ public class LevelOne extends Level implements KeyListener
 		//send event to player
 		this.player.keyPressed(keyEvent);
 
-		switch(keyEvent.getKeyCode())
-		{
-			case KeyEvent.VK_LEFT:
-
-				map.setDrawPosition(map.getDrawX() - 5, map.getDrawY());
-
-				break;
-
-			case KeyEvent.VK_RIGHT:
-
-				map.setDrawPosition(map.getDrawX() + 5, map.getDrawY());
-
-				break;
-
-			case KeyEvent.VK_DOWN:
-
-				map.setDrawPosition(map.getDrawX(), map.getDrawY() - 5);
-
-				break;
-
-			case KeyEvent.VK_UP:
-
-				map.setDrawPosition(map.getDrawX(), map.getDrawY() + 5);
-
-				break;
-		}
+//		switch(keyEvent.getKeyCode())
+//		{
+//			case KeyEvent.VK_LEFT:
+//
+//				map.setDrawPosition(map.getDrawX() - 5, map.getDrawY());
+//
+//				break;
+//
+//			case KeyEvent.VK_RIGHT:
+//
+//				map.setDrawPosition(map.getDrawX() + 5, map.getDrawY());
+//
+//				break;
+//
+//			case KeyEvent.VK_DOWN:
+//
+//				map.setDrawPosition(map.getDrawX(), map.getDrawY() - 5);
+//
+//				break;
+//
+//			case KeyEvent.VK_UP:
+//
+//				map.setDrawPosition(map.getDrawX(), map.getDrawY() + 5);
+//
+//				break;
+//		}
 	}
 
 	@Override
