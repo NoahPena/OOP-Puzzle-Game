@@ -18,6 +18,19 @@
   </properties>
   <image source="../basicMap/greenTile.jpg" width="400" height="400"/>
  </tileset>
+ <tileset firstgid="459" name="button" tilewidth="32" tileheight="32">
+  <properties>
+   <property name="trigger" value="1"/>
+  </properties>
+  <image source="button.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="460" name="blueTile" tilewidth="32" tileheight="32">
+  <properties>
+   <property name="passable" value="1"/>
+   <property name="triggered" value="1"/>
+  </properties>
+  <image source="../basicMap/blueTile.jpg" width="400" height="400"/>
+ </tileset>
  <layer name="Collision" width="30" height="30">
   <data>
    <tile gid="328"/>
@@ -153,7 +166,7 @@
    <tile gid="328"/>
    <tile gid="328"/>
    <tile gid="328"/>
-   <tile gid="328"/>
+   <tile gid="473"/>
    <tile gid="328"/>
    <tile gid="328"/>
    <tile gid="328"/>
@@ -1057,7 +1070,7 @@
    <tile gid="12"/>
    <tile gid="12"/>
    <tile gid="12"/>
-   <tile gid="12"/>
+   <tile gid="459"/>
    <tile gid="12"/>
    <tile gid="12"/>
    <tile gid="12"/>

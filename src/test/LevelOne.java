@@ -48,6 +48,8 @@ public class LevelOne extends Level implements KeyListener
 	{
 		this.player.update(entities);
 
+		System.out.println(map.testForTriggers(this.player.getBounds()));
+
         for (Entity ent: entities)
             ent.update(entities);
 
