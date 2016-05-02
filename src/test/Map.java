@@ -48,7 +48,7 @@ public class Map extends JPanel
 
             try
             {
-                mainImage = ImageIO.read(new File(path));
+                mainImage = ImageIO.read(TileSet.class.getResourceAsStream(path));
             }
             catch(Exception e)
             {
@@ -187,15 +187,18 @@ public class Map extends JPanel
         this.drawX = drawX;
         this.drawY = drawY;
 
+        this.setIgnoreRepaint(true);
+        this.setDoubleBuffered(true);
+
         tilesets = new ArrayList<>();
         layers = new ArrayList<>();
 
         try
         {
-            xmlFile = new File(path + "//" + fileName);
+            xmlFile = new File(path + File.separator + fileName);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbf.newDocumentBuilder();
-            Document doc = dBuilder.parse(xmlFile);
+            Document doc = dBuilder.parse(Map.class.getResourceAsStream(path + File.separator + fileName));
 
             doc.getDocumentElement().normalize();
 
@@ -221,7 +224,9 @@ public class Map extends JPanel
                 int imageWidth = Integer.parseInt(imageElement.getAttribute("width"));
                 int imageHeight = Integer.parseInt(imageElement.getAttribute("height"));
 
-                tilesets.add(new TileSet(path + "//" + source, firstGID, widthTile, heightTile, imageWidth, imageHeight, name));
+                System.out.println(path + "/" + source);
+
+                tilesets.add(new TileSet(path + File.separator + source, firstGID, widthTile, heightTile, imageWidth, imageHeight, name));
             }
 
             //Get Layers
@@ -315,6 +320,11 @@ public class Map extends JPanel
 
     }
 
+    public void draw(Graphics g)
+    {
+        g.drawImage(masterImage, drawX, drawY, this);
+    }
+
     public int getDrawX()
     {
         return this.drawX;
@@ -336,12 +346,14 @@ public class Map extends JPanel
         this.setPreferredSize(new Dimension(x, y));
     }
 
-    @Override
-    protected void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawImage(masterImage, drawX, drawY, this);
-    }
+//    @Override
+//    protected void paintComponent(Graphics g)
+//    {
+//        super.paintComponent(g);
+//        g.drawImage(masterImage, drawX, drawY, this);
+//    }
+
+
 
 
 }

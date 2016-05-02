@@ -5,6 +5,7 @@ import test.entity.Player;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by noah-pena on 4/28/16.
@@ -15,15 +16,19 @@ public class LevelOne extends Level implements KeyListener
 	//GraphicsEngine graphics;
 	Player player;
 
+	private BufferedImage screen;
+
 	public LevelOne()
 	{
 		super();
+
+		screen = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
 	}
 
 	@Override
 	public void onCreate()
 	{
-		map = new Map(".//assets//maps//basicMap", "basicBitchMap.tmx", 0, 0);
+		map = new Map("/maps/basicMap", "basicBitchMap.tmx", 0, 0);
 		map.setDrawSize(800, 600);
 
 		//graphics = new GraphicsEngine(map, 800, 600);
@@ -43,10 +48,12 @@ public class LevelOne extends Level implements KeyListener
 	@Override
 	public void onDraw()
 	{
-		if(this.map.getGraphics() != null)
+		if(this.map.getGraphics() != null && this.screen.getGraphics() != null)
 		{
-			map.repaint();
-			this.player.draw(this.map.getGraphics());
+			this.map.draw(this.screen.getGraphics());
+			this.player.draw(this.screen.getGraphics());
+
+			this.map.getGraphics().drawImage(this.screen, 0, 0, null);
 		}
 	}
 

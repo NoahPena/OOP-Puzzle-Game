@@ -88,7 +88,5 @@ public abstract class Entity
         this.setY(p.y);
     }
 
-    public void draw(Graphics g){
-
-    }
+    public abstract void draw(Graphics g);
 }

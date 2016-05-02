@@ -30,10 +30,10 @@ public class Player extends Entity
 
 		try
 		{
-			playerStates = ImageIO.read(getClass().getResourceAsStream("testSprites.png"));
+			playerStates = ImageIO.read(getClass().getResourceAsStream("/player/testSprites.png"));
 
 			for (int a = 0; a < (playerStates.getWidth()/32)/4; a++)
-				for (int b = 0; b < (playerStates.getHeight()/32)/4; b++)
+				for (int b = 0; b < (playerStates.getHeight()/32)/2; b++)
 					this.imageStates.add(playerStates.getSubimage(a*32, b*32, 32, 32));
 
 		} catch (IOException e)

@@ -15,6 +15,7 @@ public class Main
         frame = new JFrame();
 
         frame.setName("OPP Game");
+        frame.setIgnoreRepaint(true);
 
 
         LevelOne levelOne = new LevelOne();
@@ -24,7 +25,6 @@ public class Main
         frame.setSize(800, 600);
         frame.setContentPane(levelOne.getMap());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
 
         frame.setVisible(true);
     }
