@@ -63,7 +63,7 @@ public class Map extends JPanel
             int widthTiles = imageWidth / tileWidth;
             int heightTiles = imageHeight / tileHeight;
 
-            amountOfTiles = widthTiles + heightTiles;
+            amountOfTiles = widthTiles * heightTiles;
 
             for(int i = 0; i < heightTiles; i++)
             {
