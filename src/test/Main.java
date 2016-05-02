@@ -15,7 +15,7 @@ public class Main
     {
         frame = new JFrame();
 
-        frame.setName("OPP Game");
+        frame.setName("OOP Game");
         frame.setIgnoreRepaint(true);
 
         //SetSize of frame and record size of content pane for later use

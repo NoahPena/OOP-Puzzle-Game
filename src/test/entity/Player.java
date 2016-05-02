@@ -1,5 +1,6 @@
 package test.entity;
 
+import test.Map;
 import test.Settings;
 
 import javax.imageio.ImageIO;
@@ -20,7 +21,8 @@ public class Player extends Entity
 	private boolean aPressed;
 	private boolean sPressed;
 	private boolean dPressed;
-
+    private boolean pickup;
+    private Rock currentRock;
 
 	private static Player instance;
 
@@ -35,7 +37,7 @@ public class Player extends Entity
             int setX = 0;
             int setY = 0;
             Point temp;
-			playerStates = ImageIO.read(getClass().getResourceAsStream("/player/testSprites.png"));
+			playerStates = ImageIO.read(getClass().getResourceAsStream("/player/playerSprites.png"));
 
             temp = this.playerSelection(setX, setY);
 
@@ -117,24 +119,22 @@ public class Player extends Entity
         return temp;
     }
 
-	public void update()
+	public void update(ArrayList<Entity> list)
 	{
 		//Check movement
 		if(wPressed && !sPressed)						//Up
 		{
-            if (this.getY() > 0)
-			    this.setVelY(-1);
-            else
-                this.setVelY(0);
+            this.setVelY(-1);
+            if (!(this.getY() > 0 && !collison(list)))
+			    this.setVelY(0);
 
 			this.setImg((this.imageStates.get(3)));
 		}
 		else if(sPressed && !wPressed)					//Down
 		{
-            if(this.getY() + this.getImg().getHeight() < Settings.getWindowHeight())
-			    this.setVelY(1);
-            else
-                this.setVelY(0);
+            this.setVelY(1);
+            if(!(this.getY() + this.getImg().getHeight() < Settings.getWindowHeight() && !collison(list)))
+			    this.setVelY(0);
 
 			this.setImg((this.imageStates.get(0)));
 		}
@@ -145,19 +145,18 @@ public class Player extends Entity
 
 		if(aPressed && !dPressed)						//Left
 		{
-            if(this.getX() > 0)
-		 	    this.setVelX(-1);
-            else
-                this.setVelX(0);
+            this.setVelX(-1);
+            if(!(this.getX() > 0 && !collison(list)))
+		 	    this.setVelX(0);
 
 		 	this.setImg((this.imageStates.get(1)));
 		}
 		else if(dPressed && !aPressed)					//Right
 		{
-            if(this.getX() + this.getImg().getWidth() < Settings.getWindowWidth())
-			    this.setVelX(1);
-            else
-                this.setVelX(0);
+            this.setVelX(1);
+            if(!(this.getX() + this.getImg().getWidth() < Settings.getWindowWidth() && !collison(list)))
+			    this.setVelX(0);
+
 			this.setImg((this.imageStates.get(2)));
 		}
 		else											//No Horizontal movements
@@ -166,16 +165,50 @@ public class Player extends Entity
 		}
 
 		this.setX(this.getX() + this.getVelX()); //Move on the x axis
-		this.setY(this.getY() + this.getVelY()); //Move on the x axis
+		this.setY(this.getY() + this.getVelY()); //Move on the y axis
 	}
 
-	public void collison(ArrayList<Entity> list)
+	public boolean collison(ArrayList<Entity> list)
 	{
+        Rectangle nextMove = this.getBounds();
+        nextMove.setLocation((int) (nextMove.x + this.getVelX()), (int) (nextMove.y + this.getVelY()));
+
+        if(!this.getMap().testCollision(nextMove))
+            return true;
 
 		for (Entity e: list)
 		{
+            //check collison
+            if(e != this.currentRock)
+            {
+                if (nextMove.intersects(e.getBounds())) {
+                    return true;
+                }
+            }
 
+            if(e == this.currentRock && this.currentRock.isCollison())
+            {
+                if (nextMove.intersects(e.getBounds())) {
+                    return true;
+                }
+            }
+
+            //check rock nearby
+            if(this.isPickup() && e instanceof Rock)
+            {
+                Rectangle biggerPlayer = this.getBounds();
+                biggerPlayer.setBounds((int)biggerPlayer.getX() - 1, (int)biggerPlayer.getY() - 1, (int)biggerPlayer.getWidth() + 2, (int)biggerPlayer.getHeight() + 2);
+                if(biggerPlayer.intersects(e.getBounds()))
+                {
+                    this.currentRock = (Rock) e;
+                    this.currentRock.setPickedUp(true);
+                }
+                else
+                    this.setPickup(false);
+            }
 		}
+
+        return false;
 	}
 
 	public void draw(Graphics g)
@@ -201,7 +234,19 @@ public class Player extends Entity
 			case 'D':
 				setdPressed(true);
 				break;
+            default:
+                //nothing
 		}
+        if(e.getKeyCode() == KeyEvent.VK_SPACE)
+        {
+            this.setPickup(!this.isPickup());
+
+            if(!this.isPickup())
+            {
+                this.currentRock.setPickedUp(false);
+                this.currentRock = null;
+            }
+        }
 	}
 
 	public void keyReleased(KeyEvent e){
@@ -258,4 +303,12 @@ public class Player extends Entity
 	public void setdPressed(boolean dPressed) {
 		this.dPressed = dPressed;
 	}
+
+    public boolean isPickup() {
+        return pickup;
+    }
+
+    public void setPickup(boolean pickup) {
+        this.pickup = pickup;
+    }
 }

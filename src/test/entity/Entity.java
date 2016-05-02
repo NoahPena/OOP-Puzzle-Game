@@ -1,7 +1,10 @@
 package test.entity;
 
+import test.Map;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by Saphix on 4/30/2016.
@@ -22,6 +25,8 @@ public abstract class Entity
     //height and width of that image
     private int width;
     private int height;
+
+    private Map map;
 
     public double getX() {
         return x;
@@ -61,6 +66,8 @@ public abstract class Entity
 
     public void setImg(BufferedImage img) {
         this.img = img;
+        this.width = this.img.getWidth();
+        this.height = this.img.getWidth();
     }
 
     public int getWidth() {
@@ -79,6 +86,19 @@ public abstract class Entity
         this.height = height;
     }
 
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    public Rectangle getBounds()
+    {
+        return new Rectangle((int)this.getX(), (int)this.getY(), this.getWidth(), this.getHeight());
+    }
+
     public Point getPosition(){
         return new Point((int)this.x,(int)this.y);
     }
@@ -88,7 +108,8 @@ public abstract class Entity
         this.setY(p.y);
     }
 
-    public abstract void update();
+    public abstract void update(ArrayList<Entity> list);
+
 
     public abstract void draw(Graphics g);
 }
