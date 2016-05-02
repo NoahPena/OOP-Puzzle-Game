@@ -43,7 +43,7 @@ public class TitleScreen extends JPanel
                 int setX = 0;
                 int setY = 0;
 
-                playerStates = ImageIO.read(getClass().getResourceAsStream("/player/testSprites.png"));
+                playerStates = ImageIO.read(getClass().getResourceAsStream("/player/playerSprites.png"));
 
                 for (int x = setX; x < (playerStates.getWidth()/32) + setX; x++)
                     for (int y = setY; y < (playerStates.getHeight()/32) + setY; y++)

@@ -5,7 +5,7 @@ package test;
  */
 public class Settings {
     private static final int frameWidth = 1600;
-    private static final int frameHeight = 900;
+    private static final int frameHeight = 896;
     private static int playerSelection;
     private static int windowWidth;
     private static int windowHeight;

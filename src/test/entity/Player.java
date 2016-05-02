@@ -56,8 +56,8 @@ public class Player extends Entity
 		this.setImg(this.imageStates.get(0));
 
 		//Set staring location
-		this.setX(100);
-		this.setY(100);
+		this.setX(0);
+		this.setY(0);
 
 		//Set Velocity to 0
 		this.setVelX(0);
@@ -241,7 +241,7 @@ public class Player extends Entity
         {
             this.setPickup(!this.isPickup());
 
-            if(!this.isPickup())
+            if(!this.isPickup() && this.currentRock != null)
             {
                 this.currentRock.setPickedUp(false);
                 this.currentRock = null;

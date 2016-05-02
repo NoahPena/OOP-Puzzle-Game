@@ -1,10 +1,12 @@
 package test;
 
 import test.entity.Entity;
+import test.entity.ImmovableRock;
 import test.entity.Player;
 import test.entity.Rock;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -41,6 +43,8 @@ public class LevelOne extends Level implements KeyListener
         player.setMap(this.map);
         entities.add(new Rock());
         entities.get(0).setMap(this.map);
+        entities.add(new ImmovableRock());
+        entities.get(1).setPosition(new Point(200, 150));
 	}
 
 	@Override
@@ -80,32 +84,34 @@ public class LevelOne extends Level implements KeyListener
 		//send event to player
 		this.player.keyPressed(keyEvent);
 
-//		switch(keyEvent.getKeyCode())
-//		{
-//			case KeyEvent.VK_LEFT:
-//
-//				map.setDrawPosition(map.getDrawX() - 5, map.getDrawY());
-//
-//				break;
-//
-//			case KeyEvent.VK_RIGHT:
-//
-//				map.setDrawPosition(map.getDrawX() + 5, map.getDrawY());
-//
-//				break;
-//
-//			case KeyEvent.VK_DOWN:
-//
-//				map.setDrawPosition(map.getDrawX(), map.getDrawY() - 5);
-//
-//				break;
-//
-//			case KeyEvent.VK_UP:
-//
-//				map.setDrawPosition(map.getDrawX(), map.getDrawY() + 5);
-//
-//				break;
-//		}
+        ImmovableRock temp  = (ImmovableRock)entities.get(1);
+
+		switch(keyEvent.getKeyCode())
+		{
+			case KeyEvent.VK_LEFT:
+
+                temp.move("West");
+
+				break;
+
+			case KeyEvent.VK_RIGHT:
+
+                temp.move("East");
+
+				break;
+
+			case KeyEvent.VK_DOWN:
+
+                temp.move("South");
+
+				break;
+
+			case KeyEvent.VK_UP:
+
+                temp.move("North");
+
+				break;
+		}
 	}
 
 	@Override
