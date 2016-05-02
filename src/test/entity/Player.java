@@ -34,39 +34,13 @@ public class Player extends Entity
 		{
             int setX = 0;
             int setY = 0;
+            Point temp;
 			playerStates = ImageIO.read(getClass().getResourceAsStream("/player/testSprites.png"));
 
-            switch (Settings.getPlayerSelection())
-            {
-                case 1:
-                    setX = 3;
-                    break;
+            temp = this.playerSelection(setX, setY);
 
-                case 2:
-                    setX = 6;
-                    break;
-
-                case 3:
-                    setX = 9;
-                    break;
-
-                case 4:
-                    setY = 4;
-                    break;
-
-                case 5:
-                    setX = 3;
-                    setY = 4;
-                    break;
-
-                case 6:
-                    setX = 6;
-                    setY = 4;
-                    break;
-
-                default:
-                    //Default character
-            }
+            setX = temp.x;
+            setY = temp.y;
             
 			for (int x = setX; x < (playerStates.getWidth()/32)/4 + setX; x++)
 				for (int y = setY; y < (playerStates.getHeight()/32)/2 + setY; y++)
@@ -103,6 +77,45 @@ public class Player extends Entity
 //	public static void resetInstance(){
 //		instance = new Player();
 //	}
+
+    private Point playerSelection(int x, int y)
+    {
+        Point temp = new Point(0,0);
+
+        switch (Settings.getPlayerSelection())
+        {
+            case 1:
+                temp.x = 3;
+                break;
+
+            case 2:
+                temp.x = 6;
+                break;
+
+            case 3:
+                temp.x = 9;
+                break;
+
+            case 4:
+                temp.y = 4;
+                break;
+
+            case 5:
+                temp.x = 3;
+                temp.y = 4;
+                break;
+
+            case 6:
+                temp.x = 6;
+                temp.y = 4;
+                break;
+
+            default:
+                //Default character
+        }
+
+        return temp;
+    }
 
 	public void update()
 	{

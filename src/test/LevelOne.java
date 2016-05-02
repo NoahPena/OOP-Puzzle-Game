@@ -1,11 +1,14 @@
 package test;
 
+import test.entity.Entity;
 import test.entity.Player;
+import test.entity.Rock;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created by noah-pena on 4/28/16.
@@ -13,8 +16,8 @@ import java.awt.image.BufferedImage;
 public class LevelOne extends Level implements KeyListener
 {
 	Map map;
-	//GraphicsEngine graphics;
 	Player player;
+    ArrayList<Entity> entities;
 
 	private BufferedImage screen;
 
@@ -22,6 +25,7 @@ public class LevelOne extends Level implements KeyListener
 	{
 		super();
 
+        entities =  new ArrayList<>();
 		screen = new BufferedImage(Settings.getWindowWidth(), Settings.getWindowHeight(), BufferedImage.TYPE_INT_RGB);
 	}
 
@@ -33,12 +37,17 @@ public class LevelOne extends Level implements KeyListener
 
 		//Add player
 		player = Player.getInstance();
+        entities.add(new Rock());
 	}
 
 	@Override
 	public void onUpdate(float deltaTime)
 	{
 		this.player.update();
+
+        for (Entity ent: entities)
+            ent.update();
+
 	}
 
 	@Override
@@ -48,6 +57,8 @@ public class LevelOne extends Level implements KeyListener
 		{
 			this.map.draw(this.screen.getGraphics());
 			this.player.draw(this.screen.getGraphics());
+            for (Entity ent: entities)
+                ent.draw(this.screen.getGraphics());
 
 			this.map.getGraphics().drawImage(this.screen, 0, 0, null);
 		}
