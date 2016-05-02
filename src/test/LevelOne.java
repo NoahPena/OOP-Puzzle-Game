@@ -54,8 +54,18 @@ public class LevelOne extends Level implements KeyListener
 
 		System.out.println(map.testForTriggers(this.player.getBounds()));
 
+        if(map.testForTriggers(entities.get(0).getBounds()))
+        {
+            ImmovableRock temp  = (ImmovableRock)entities.get(1);
+            temp.move("South");
+            temp.move("East");
+        }
+
         for (Entity ent: entities)
+        {
+            map.testForTriggers(ent.getBounds());
             ent.update(entities);
+        }
 
 	}
 

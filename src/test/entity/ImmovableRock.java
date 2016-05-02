@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by Saphix on 5/2/2016.
@@ -12,11 +12,17 @@ import java.util.ArrayList;
 public class ImmovableRock extends Entity
 {
     private ArrayList<BufferedImage> imageStates;
+    private LinkedList<String> moves;
+    private boolean moving;
+    private int moved;
 
     public ImmovableRock()
     {
         BufferedImage rock;
         this.imageStates =  new ArrayList<>();
+        this.moving = false;
+        this.moved = 0;
+        this.moves = new LinkedList<>();
 
         try
         {
@@ -45,26 +51,33 @@ public class ImmovableRock extends Entity
 
     public void move(String direction)
     {
-        switch (direction)
-        {
-            case "North":
-                this.setY(this.getY() - 32);
-                break;
-            case "South":
-                this.setY(this.getY() + 32);
-                break;
-            case "East":
-                this.setX(this.getX() + 32);
-                break;
-            case "West":
-                this.setX(this.getX() - 32);
-                break;
-        }
+        moves.add(direction);
     }
 
     public void update(ArrayList<Entity> list)
     {
-
+        if(moves.size() > 0)
+        {
+            switch (moves.peek())
+            {
+                case "North":
+                    this.setY(this.getY() - 1);
+                    this.moved++;
+                    break;
+                case "South":
+                    this.setY(this.getY() + 1);
+                    this.moved++;
+                    break;
+                case "East":
+                    this.setX(this.getX() + 1);
+                    this.moved++;
+                    break;
+                case "West":
+                    this.setX(this.getX() - 1);
+                    this.moved++;
+                    break;
+            }
+        }
     }
 
     public void draw(Graphics g)
