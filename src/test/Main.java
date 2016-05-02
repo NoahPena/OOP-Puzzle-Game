@@ -27,13 +27,13 @@ public class Main
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setVisible(true);
+
         //while(Settings.gameOver != false)
        // {
-            TitleScreen title = new TitleScreen();
-            title.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
+           //TitleScreen title = new TitleScreen();
+            //title.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
 
-            frame.setContentPane(title);
+           // frame.setContentPane(title);
 
             //Set Character
             Settings.setPlayerSelection(5);
@@ -44,6 +44,7 @@ public class Main
             levelOne.setKeyListener(frame);
 
             frame.setContentPane(levelOne.getMap());
+            frame.setVisible(true);
       //  }
 
 
