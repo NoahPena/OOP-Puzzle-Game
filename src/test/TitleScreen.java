@@ -22,7 +22,8 @@ public class TitleScreen extends JPanel
         private final int xCor = 0; //Coordinates for printing on screen
         private final int yCor = 0;
     
-        protected static boolean charSelect = false; //Flag for engaging the charselect in paintcomponent
+        protected static boolean pressed; //Flag for engaging the charselect in paintcomponent
+        protected static boolean charSelect;
 
 
         public TitleScreen(Dimension d)
@@ -31,7 +32,8 @@ public class TitleScreen extends JPanel
 
             titleScreen = new BufferedImage(Settings.getWindowWidth(), Settings.getWindowHeight(), BufferedImage.TYPE_INT_RGB);
 
-            charSelect = false; //Flag for the
+            pressed = false; //Flag for the
+            charSelect = false;
 
             startButton = new JButton("Start Game");
             endButton = new JButton("Quit");
@@ -54,17 +56,6 @@ public class TitleScreen extends JPanel
 
             this.add(startButton);
             this.add(endButton);
-//
-//            while(true)
-//            {
-//                if(charSelect == true || Settings.gameOver == true)
-//                {
-//                    break;
-//
-//                }
-//            }
-
-
 
         }
 
@@ -79,6 +70,26 @@ public class TitleScreen extends JPanel
         {
             this.getGraphics().drawImage(this.titleScreen, 0, 0, null);
         }
+
+        public boolean run()
+        {
+            while(pressed == false)
+            {
+                if(pressed == true)
+                    break;
+
+            }
+            if(charSelect == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 }
 
 
@@ -88,7 +99,11 @@ public class TitleScreen extends JPanel
         @Override
         public void actionPerformed(ActionEvent e)
         {
+            System.out.print(TitleScreen.charSelect);
+            System.out.println("Here2");
             TitleScreen.charSelect = true;
+            TitleScreen.pressed = true;
+            System.out.print(TitleScreen.charSelect);
         }
     }
 

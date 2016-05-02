@@ -32,8 +32,9 @@ public class Main
        // {
             TitleScreen title = new TitleScreen(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
             frame.setContentPane(title);
-
-            //title.run
+            title.draw();
+            frame.setVisible(true);
+            title.run();
             //if run returns true continue if run returns false exit game
 
             //charselect.run
@@ -41,17 +42,15 @@ public class Main
 
 
             //Set Character
-//            Settings.setPlayerSelection(5);
-//
-//            //Set up Level
-//            LevelOne levelOne = new LevelOne();
-//            levelOne.execute();
-//            levelOne.setKeyListener(frame);
-//
-//            frame.setContentPane(levelOne.getMap());
+             Settings.setPlayerSelection(5);
 
-            frame.setVisible(true);
-            title.draw();
+
+             LevelOne levelOne = new LevelOne();
+             levelOne.execute();
+             levelOne.setKeyListener(frame);
+
+            frame.setContentPane(levelOne.getMap());
+
       //  }
 
 
