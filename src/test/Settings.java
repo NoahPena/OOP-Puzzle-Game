@@ -10,6 +10,8 @@ public class Settings {
     private static int windowWidth;
     private static int windowHeight;
 
+    protected static boolean gameOver = false;
+
     public static int getFrameWidth() {
         return frameWidth;
     }
@@ -41,4 +43,8 @@ public class Settings {
     public static void setWindowHeight(int windowHeight) {
         Settings.windowHeight = windowHeight;
     }
+
+    public static void setGameOver(boolean b){Settings.gameOver = b;}
+
+    public static boolean getGameOver(){return gameOver;}
 }

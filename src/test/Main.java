@@ -25,17 +25,27 @@ public class Main
         Settings.setWindowWidth((int)frame.getContentPane().getSize().getWidth());
         Settings.setWindowHeight((int)frame.getContentPane().getSize().getHeight());
 
-        //Set Character
-        Settings.setPlayerSelection(5);
-
-        //Set up Level
-        LevelOne levelOne = new LevelOne();
-        levelOne.execute();
-        levelOne.setKeyListener(frame);
-
-        frame.setContentPane(levelOne.getMap());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setVisible(true);
+        //while(Settings.gameOver != false)
+       // {
+            TitleScreen title = new TitleScreen();
+            title.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
+
+            frame.setContentPane(title);
+
+            //Set Character
+            Settings.setPlayerSelection(5);
+
+            //Set up Level
+            LevelOne levelOne = new LevelOne();
+            levelOne.execute();
+            levelOne.setKeyListener(frame);
+
+            frame.setContentPane(levelOne.getMap());
+      //  }
+
+
     }
 }
