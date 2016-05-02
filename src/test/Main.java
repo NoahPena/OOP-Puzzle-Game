@@ -21,7 +21,7 @@ public class Main
         frame.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
         frame.getContentPane().setPreferredSize(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
         frame.pack();
-        Settings.setWindowWidth((int)frame.getContentPane().getSize().getWidth());
+
         Settings.setWindowHeight((int)frame.getContentPane().getSize().getHeight());
         System.out.println("Window W: " + Settings.getWindowWidth());
         System.out.println("Window H: " + Settings.getWindowHeight());
