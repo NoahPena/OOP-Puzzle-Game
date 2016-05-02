@@ -32,7 +32,8 @@ public class LevelOne extends Level implements KeyListener
 	@Override
 	public void onCreate()
 	{
-		map = new Map("/maps/basicMap", "basicBitchMap.tmx", 0, 0);
+		map = new Map("/maps/shortBasicMap", "shortBasicMap.tmx", 0, 0);
+		//map = new Map("/maps/basicMap", "basicBitchMap.tmx", 0, 0);
 		map.setDrawSize(Settings.getWindowWidth(), Settings.getWindowHeight());
 
 		//Add player
