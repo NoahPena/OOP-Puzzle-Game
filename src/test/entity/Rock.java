@@ -23,7 +23,7 @@ public class Rock extends Entity
 
     public Rock()
     {
-        BufferedImage playerStates;
+        BufferedImage rock;
 
         this.pickedUp = false;
         this.imageStates =  new ArrayList<>();
@@ -35,19 +35,19 @@ public class Rock extends Entity
 
         try
         {
-            playerStates = ImageIO.read(getClass().getResourceAsStream("/objects/rock.png"));
+            rock = ImageIO.read(getClass().getResourceAsStream("/objects/hardrock.png"));
 
 
-            for (int x = 0; x < (playerStates.getWidth()/32); x++)
-                for (int y = 0; y < (playerStates.getHeight()/32); y++)
-                    this.imageStates.add(playerStates.getSubimage(x*32, y*32, 32, 32));
+            for (int x = 0; x < (rock.getWidth()/32); x++)
+                for (int y = 0; y < (rock.getHeight()/32); y++)
+                    this.imageStates.add(rock.getSubimage(x*32, y*32, 32, 32));
 
         } catch (IOException e)
         {
             e.printStackTrace();
         }
 
-        this.setImg(this.imageStates.get(2));
+        this.setImg(this.imageStates.get(8));
 
         //Set staring location
         this.setX(150);
@@ -69,7 +69,7 @@ public class Rock extends Entity
             Rectangle nextMove = this.getBounds();
             nextMove.setLocation((int) (nextMove.x + this.getVelX()), (int) (nextMove.y + this.getVelY()));
 
-            if(this.getVelY() == -1)
+            if(Player.getInstance().iswPressed())
             {
                 collisonS = false;
                 if (!(nextMove.getY() > 0 && !collison(list)))
@@ -78,7 +78,7 @@ public class Rock extends Entity
                     collisonW = true;
                 }
             }
-            if(this.getVelY() == 1)
+            if(Player.getInstance().issPressed())
             {
                 collisonW = false;
                 if(!(nextMove.getY() + this.getImg().getHeight() < Settings.getWindowHeight() && !collison(list)))
@@ -88,7 +88,7 @@ public class Rock extends Entity
                     collisonS = true;
                 }
             }
-            if(this.getVelX() == -1)
+            if(Player.getInstance().isaPressed())
             {
                 collisonD = false;
                 if(!(nextMove.getX() > 0 && !collison(list)))
@@ -97,7 +97,7 @@ public class Rock extends Entity
                     collisonA = true;
                 }
             }
-            if(this.getVelX() == 1)
+            if(Player.getInstance().isdPressed())
             {
                 collisonA = false;
                 if(!(nextMove.getX() + this.getImg().getWidth() < Settings.getWindowWidth() && !collison(list)))

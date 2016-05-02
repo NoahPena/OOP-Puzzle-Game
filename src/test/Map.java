@@ -206,6 +206,7 @@ public class Map extends JPanel
 
         private ArrayList<Boolean> collidable;
         private ArrayList<Rectangle> rectangles;
+        private ArrayList<Boolean> triggers;
 
         public CollisionLayer(String name, int width, int height, ArrayList<Integer> tiles, ArrayList<TileSet> tilesets)
         {
@@ -215,6 +216,7 @@ public class Map extends JPanel
 
             collidable = new ArrayList<>();
             rectangles = new ArrayList<>();
+            triggers = new ArrayList<>();
 
             for(int i = 0; i < tiles.size(); i++)
             {
@@ -227,7 +229,41 @@ public class Map extends JPanel
 
                         if(temp)
                         {
-                           rectangles.add(null);
+                            if(tilesets.get(j).getPropertyValueByName("triggered") == 1)
+                            {
+                                triggers.add(true);
+                                int pointX = -1;
+                                int pointY = -1;
+
+                                for(int t = 1; t < height; t++)
+                                {
+                                    if(width * t > i)
+                                    {
+                                        pointX = (i) - ((t - 1) * width);
+                                        pointX *= tilesets.get(j).tileWidth;
+                                        pointY = (t - 1) * tilesets.get(j).tileHeight;
+                                        break;
+                                    }
+                                }
+
+                                if(pointX == -1)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+
+                                    rectangles.add(new Rectangle(pointX, pointY, tilesets.get(j).tileWidth, tilesets.get(j).tileHeight));
+
+                                }
+                            }
+                            else
+                            {
+                                triggers.add(false);
+                                rectangles.add(null);
+                            }
+
+
                         }
                         else
                         {
@@ -251,11 +287,13 @@ public class Map extends JPanel
                             }
                             else
                             {
-
+                                triggers.add(false);
                                 rectangles.add(new Rectangle(pointX, pointY, tilesets.get(j).tileWidth, tilesets.get(j).tileHeight));
 
                             }
                         }
+
+
                     }
                 }
             }
@@ -269,13 +307,40 @@ public class Map extends JPanel
                 {
                     if(rectangles.get(i).intersects(rectangle))
                     {
-                        return false;
+                        if(triggers.get(i))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
             }
 
             return true;
         }
+
+        public boolean testForTrigger(Rectangle rectangle)
+        {
+            for(int i = 0; i < rectangles.size(); i++)
+            {
+                if(rectangles.get(i) != null)
+                {
+                    if(rectangles.get(i).intersects(rectangle))
+                    {
+                        if(triggers.get(i))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
     }
 
     private File xmlFile;
@@ -414,6 +479,18 @@ public class Map extends JPanel
         return collisionLayer.canPass(rectangle);
     }
 
+    public boolean testIfTouchingTile(Rectangle rectangle, int tileX, int tileY)
+    {
+        Rectangle tileRectangle = new Rectangle(tileX, tileY, tileWidth, tileHeight);
+
+        return rectangle.intersects(tileRectangle);
+    }
+
+    public boolean testForTriggers(Rectangle rectangle)
+    {
+        return collisionLayer.testForTrigger(rectangle);
+    }
+
     private void createMasterImage()
     {
         ArrayList<BufferedImage> masterList = new ArrayList<>();
@@ -435,13 +512,13 @@ public class Map extends JPanel
                 {
                     masterList.set(j, image);
                 }
-                else if(masterList.get(j) != null)
-                {
-                    masterList.set(j, image);
-                }
                 else if(image == null)
                 {
 
+                }
+                else if(masterList.get(j) != null)
+                {
+                    masterList.set(j, image);
                 }
             }
         }
