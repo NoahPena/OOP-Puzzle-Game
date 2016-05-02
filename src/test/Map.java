@@ -369,6 +369,7 @@ public class Map extends JPanel
         this.drawX = drawX;
         this.drawY = drawY;
 
+        this.setFocusable(false);
         this.setIgnoreRepaint(true);
         this.setDoubleBuffered(true);
 

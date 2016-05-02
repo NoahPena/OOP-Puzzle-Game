@@ -16,7 +16,6 @@ public class Main
         frame = new JFrame();
 
         frame.setName("OOP Game");
-        frame.setIgnoreRepaint(true);
 
         //SetSize of frame and record size of content pane for later use
         frame.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
@@ -30,26 +29,41 @@ public class Main
 
         //while(Settings.gameOver != false)
        // {
-            TitleScreen title = new TitleScreen(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
+            frame.setSize(900, 600);
+            frame.setLocationRelativeTo(null);
+            TitleScreen title = new TitleScreen(new Dimension(900, 600));
             frame.setContentPane(title);
-            title.draw();
             frame.setVisible(true);
-            title.run();
+            title.repaint();
+            if(title.run())
+                frame.getContentPane().removeAll();
+            else
+                System.exit(0);
             //if run returns true continue if run returns false exit game
 
-            //charselect.run
-            //set char with whatever it gives back
+            CharSelect select = new CharSelect();
+            frame.getContentPane().add(select);
+            frame.getContentPane().validate();
+            frame.getContentPane().repaint();
+            if(select.run())
+                frame.getContentPane().removeAll();
 
-
-            //Set Character
-             Settings.setPlayerSelection(5);
-
+            frame.setVisible(false);
+            frame.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
+            frame.setResizable(false);
+            frame.setLocationRelativeTo(null);
 
              LevelOne levelOne = new LevelOne();
              levelOne.execute();
-             levelOne.setKeyListener(frame);
 
-            frame.setContentPane(levelOne.getMap());
+            frame.getContentPane().add(levelOne.getMap());
+            frame.getContentPane().validate();
+            frame.getContentPane().repaint();
+
+            frame.setVisible(true);
+            frame.setFocusable(true);
+
+            levelOne.setKeyListener(frame);
 
       //  }
 

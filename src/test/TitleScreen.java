@@ -25,12 +25,17 @@ public class TitleScreen extends JPanel
         protected static boolean pressed; //Flag for engaging the charselect in paintcomponent
         protected static boolean charSelect;
 
+        private long lastLoopTime = System.nanoTime();
+
+        private final int TARGET_FPS = 60;
+        private final long BEST_TIME = 1000000000 / TARGET_FPS;
+
 
         public TitleScreen(Dimension d)
         {
             this.setPreferredSize(d);
 
-            titleScreen = new BufferedImage(Settings.getWindowWidth(), Settings.getWindowHeight(), BufferedImage.TYPE_INT_RGB);
+            titleScreen = new BufferedImage((int)d.getWidth(), (int)d.getHeight(), BufferedImage.TYPE_INT_RGB);
 
             pressed = false; //Flag for the
             charSelect = false;
@@ -47,7 +52,8 @@ public class TitleScreen extends JPanel
             setBackground(Color.BLACK);
             try
             {
-                titleScreen = ImageIO.read(getClass().getResourceAsStream("/title/Placeholder.png"));
+                BufferedImage temp = ImageIO.read(getClass().getResourceAsStream("/title/Placeholder.png"));
+                titleScreen.getGraphics().drawImage(temp, titleScreen.getWidth()/2 - temp.getWidth()/2, titleScreen.getHeight()/2 - temp.getHeight()/2, temp.getWidth(), temp.getHeight(), null);
             }
             catch (IOException e)
             {
@@ -73,20 +79,42 @@ public class TitleScreen extends JPanel
 
         public boolean run()
         {
-            while(pressed == false)
+            while(true)
             {
-                if(pressed == true)
-                    break;
+                long now = System.nanoTime();
+                long updateTime = now - lastLoopTime;
+                lastLoopTime = now;
+                float delta = updateTime / BEST_TIME;
 
+                if(pressed)
+                    if(charSelect)
+                        return true;
+                    else
+                        return false;
+                try
+                {
+                    Thread.sleep((lastLoopTime - System.nanoTime() + BEST_TIME) / 1000000);
+                }
+                catch(Exception e)
+                {
+
+                }
             }
-            if(charSelect == true)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+//            while(pressed == false)
+//            {
+//                if(pressed == true)
+//                    break;
+//
+//            }
+//            if(charSelect == true)
+//            {
+//                return true;
+//            }
+//            else
+//            {
+//                return false;
+//            }
         }
 
 
@@ -99,11 +127,11 @@ public class TitleScreen extends JPanel
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            System.out.print(TitleScreen.charSelect);
+            System.out.println(TitleScreen.pressed);
             System.out.println("Here2");
             TitleScreen.charSelect = true;
             TitleScreen.pressed = true;
-            System.out.print(TitleScreen.charSelect);
+            System.out.println(TitleScreen.pressed);
         }
     }
 

@@ -20,6 +20,7 @@ public class LevelOne extends Level implements KeyListener
 	Map map;
 	Player player;
     ArrayList<Entity> entities;
+    private boolean lock = true;
 
 	private BufferedImage screen;
 
@@ -38,13 +39,19 @@ public class LevelOne extends Level implements KeyListener
 		//map = new Map("/maps/basicMap", "basicBitchMap.tmx", 0, 0);
 		map.setDrawSize(Settings.getWindowWidth(), Settings.getWindowHeight());
 
+
+
 		//Add player
 		player = Player.getInstance();
+        player.setPosition(new Point(800, 400));
         player.setMap(this.map);
         entities.add(new Rock());
         entities.get(0).setMap(this.map);
+        entities.get(0).setPosition(new Point(850, 400));
         entities.add(new ImmovableRock());
-        entities.get(1).setPosition(new Point(200, 150));
+        entities.get(1).setPosition(new Point(384, 672));
+        entities.add(new ImmovableRock());
+        entities.get(2).setPosition(new Point(416, 672));
 	}
 
 	@Override
@@ -52,13 +59,19 @@ public class LevelOne extends Level implements KeyListener
 	{
 		this.player.update(entities);
 
-		System.out.println(map.testForTriggers(this.player.getBounds()));
-
         if(map.testForTriggers(entities.get(0).getBounds()))
         {
-            ImmovableRock temp  = (ImmovableRock)entities.get(1);
-            temp.move("South");
-            temp.move("East");
+            if(lock)
+            {
+                ImmovableRock temp = (ImmovableRock) entities.get(1);
+                temp.move("South");
+                temp.move("West");
+
+                temp = (ImmovableRock) entities.get(2);
+                temp.move("South");
+                temp.move("East");
+                lock = false;
+            }
         }
 
         for (Entity ent: entities)
@@ -95,33 +108,6 @@ public class LevelOne extends Level implements KeyListener
 		this.player.keyPressed(keyEvent);
 
         ImmovableRock temp  = (ImmovableRock)entities.get(1);
-
-		switch(keyEvent.getKeyCode())
-		{
-			case KeyEvent.VK_LEFT:
-
-                temp.move("West");
-
-				break;
-
-			case KeyEvent.VK_RIGHT:
-
-                temp.move("East");
-
-				break;
-
-			case KeyEvent.VK_DOWN:
-
-                temp.move("South");
-
-				break;
-
-			case KeyEvent.VK_UP:
-
-                temp.move("North");
-
-				break;
-		}
 	}
 
 	@Override

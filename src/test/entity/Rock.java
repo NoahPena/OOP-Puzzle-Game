@@ -107,10 +107,6 @@ public class Rock extends Entity
                 }
             }
 
-            System.out.println("W: " + collisonW);
-            System.out.println("A: " + collisonA);
-            System.out.println("S: " + collisonS);
-            System.out.println("D: " + collisonD);
             if(collisonW || collisonA || collisonS || collisonD)
                 this.setCollison(true);
             else
