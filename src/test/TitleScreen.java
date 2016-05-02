@@ -25,8 +25,11 @@ public class TitleScreen extends JPanel
         protected static boolean charSelect = false; //Flag for engaging the charselect in paintcomponent
 
 
-        public TitleScreen()
+        public TitleScreen(Dimension d)
         {
+            this.setPreferredSize(d);
+
+            titleScreen = new BufferedImage(Settings.getWindowWidth(), Settings.getWindowHeight(), BufferedImage.TYPE_INT_RGB);
 
             charSelect = false; //Flag for the
 
@@ -38,7 +41,6 @@ public class TitleScreen extends JPanel
 
             EndHandler endHand = new EndHandler();
             endButton.addActionListener(endHand);
-
 
             setBackground(Color.BLACK);
             try
@@ -52,15 +54,15 @@ public class TitleScreen extends JPanel
 
             this.add(startButton);
             this.add(endButton);
-
-            while(true)
-            {
-                if(charSelect == true || Settings.gameOver == true)
-                {
-                    break;
-
-                }
-            }
+//
+//            while(true)
+//            {
+//                if(charSelect == true || Settings.gameOver == true)
+//                {
+//                    break;
+//
+//                }
+//            }
 
 
 
@@ -72,7 +74,14 @@ public class TitleScreen extends JPanel
                 super.paintComponent(g);
                 g.drawImage(titleScreen, xCor, yCor, null);
         }
+
+        public void draw()
+        {
+            this.getGraphics().drawImage(this.titleScreen, 0, 0, null);
+        }
 }
+
+
 
     class StartHandler implements ActionListener
     {
