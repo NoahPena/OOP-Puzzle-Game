@@ -1,5 +1,7 @@
 package test;
 
+import java.awt.*;
+
 /**
  * Created by noah-pena on 4/28/16.
  */
@@ -14,6 +16,8 @@ public abstract class Level implements GameLoop, Runnable
 
 	//private boolean paused = false;
 	private static boolean running = false;
+
+	private Rectangle goal;
 
 	public abstract void onCreate();
 	public abstract void onUpdate(float deltaTime);
@@ -72,5 +76,13 @@ public abstract class Level implements GameLoop, Runnable
 
 			}
 		}
+	}
+
+	public Rectangle getGoal() {
+		return goal;
+	}
+
+	public void setGoal(Rectangle goal) {
+		this.goal = goal;
 	}
 }

@@ -8,7 +8,7 @@ import java.awt.*;
  */
 public class Main
 {
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     private static JFrame frame;
 
     public static void main(String[] args)
@@ -23,49 +23,55 @@ public class Main
         frame.pack();
         Settings.setWindowWidth((int)frame.getContentPane().getSize().getWidth());
         Settings.setWindowHeight((int)frame.getContentPane().getSize().getHeight());
+        System.out.println("Window W: " + Settings.getWindowWidth());
+        System.out.println("Window H: " + Settings.getWindowHeight());
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
         //while(Settings.gameOver != false)
-       // {
-            frame.setSize(900, 600);
-            frame.setLocationRelativeTo(null);
-            TitleScreen title = new TitleScreen(new Dimension(900, 600));
-            frame.setContentPane(title);
-            frame.setVisible(true);
-            title.repaint();
-            if(title.run())
-                frame.getContentPane().removeAll();
-            else
-                System.exit(0);
-            //if run returns true continue if run returns false exit game
+        // {
+        frame.setSize(900, 600);
+        frame.setLocationRelativeTo(null);
+        TitleScreen title = new TitleScreen(new Dimension(900, 600));
+        frame.setContentPane(title);
+        frame.setVisible(true);
+        title.repaint();
+        if(title.run())
+            frame.getContentPane().removeAll();
+        else
+            System.exit(0);
+        //if run returns true continue if run returns false exit game
 
-            CharSelect select = new CharSelect();
-            frame.getContentPane().add(select);
-            frame.getContentPane().validate();
-            frame.getContentPane().repaint();
-            if(select.run())
-                frame.getContentPane().removeAll();
+        CharSelect select = new CharSelect();
+        frame.getContentPane().add(select);
+        frame.getContentPane().validate();
+        frame.getContentPane().repaint();
 
+        if(select.run()) {
+            frame.removeAll();
             frame.setVisible(false);
-            frame.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
-            frame.setResizable(false);
-            frame.setLocationRelativeTo(null);
+        }
 
-             LevelOne levelOne = new LevelOne();
-             levelOne.execute();
+        frame = new JFrame();
 
-            frame.getContentPane().add(levelOne.getMap());
-            frame.getContentPane().validate();
-            frame.getContentPane().repaint();
+        frame.setName("OOP Game");
+        frame.setSize(Settings.getFrameWidth(), Settings.getFrameHeight());
+        frame.getContentPane().setPreferredSize(new Dimension(Settings.getFrameWidth(), Settings.getFrameHeight()));
+        frame.setResizable(false);
+        //frame.setLocationRelativeTo(null);
 
-            frame.setVisible(true);
-            frame.setFocusable(true);
+        LevelOne levelOne = new LevelOne();
+        levelOne.execute();
 
-            levelOne.setKeyListener(frame);
+        frame.getContentPane().add(levelOne.getMap());
 
-      //  }
+        frame.setVisible(true);
+        frame.setFocusable(true);
+
+        levelOne.setKeyListener(frame);
+
+        //  }
 
 
     }
